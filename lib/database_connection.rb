@@ -22,7 +22,7 @@ class DatabaseConnection
     else
       database_name = 'music_library'
     end
-    @connection = PG.connect({ host: '127.0.0.1', dbname: music_library })
+    @connection = PG.connect({ host: '127.0.0.1', dbname: 'music_library_test' })
   end
 
   # This method executes an SQL query 
