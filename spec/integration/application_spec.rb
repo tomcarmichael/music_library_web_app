@@ -113,7 +113,7 @@ describe Application do
       expect(artists.last.genre).to eq("Indie")
     end
  
-    it "Adds Curtis Mayfield artist to the database" do
+    it "Adds Curtis Mayfield to the database" do
       response = post('/artists', name: 'Curtis Mayfield', genre: 'Soul')
       expect(response.status).to eq (200)
       expect(response.body).to include ('<h1>You added Curtis Mayfield</h1>')
@@ -124,7 +124,7 @@ describe Application do
 
     end
 
-    it "Adds Outkast artist to the database" do
+    it "Adds Outkast to the database" do
       response = post('/artists', name: 'Outkast', genre: 'Hip-hop')
       expect(response.status).to eq (200)
       expect(response.body).to include ('<h1>You added Outkast</h1>')
@@ -132,6 +132,21 @@ describe Application do
       response = get('/artists')
       expect(response.status).to eq(200)
       expect(response.body).to include('<a href="/artists/5">Outkast</a>')
+    end
+
+    it 'responds with 400 status if parameter names are changed by client' do
+      response = post('/artists', namezzz: 'Outkast', password: 'Hip-hop')
+      expect(response.status).to eq (400)
+    end
+
+    it 'responds with 400 status if parameters are nil' do
+      response = post('/artists', name: nil, genre: nil)
+      expect(response.status).to eq (400)
+    end
+
+    it 'responds with 400 status if parameters are empty strings' do
+      response = post('/artists', name: "", genre: "")
+      expect(response.status).to eq (400)
     end
   end
 

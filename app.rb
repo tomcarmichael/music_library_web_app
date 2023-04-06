@@ -48,7 +48,17 @@ class Application < Sinatra::Base
     return erb(:add_artist)
   end
 
+  def invalid_request_params?
+    return true if params[:name] == nil || params[:genre] == nil
+    return true if params[:name] == "" || params[:genre] == ""
+    return false
+  end 
+
   post '/artists' do
+    if invalid_request_params?
+      status 400
+      return ""
+    end
     @artist = Artist.new
     @artist.name = params[:name]
     @artist.genre = params[:genre]
@@ -60,6 +70,8 @@ class Application < Sinatra::Base
   get '/add_album' do
     return erb(:add_album)
   end
+
+
 
   post '/albums' do
     @album = Album.new
@@ -81,4 +93,7 @@ class Application < Sinatra::Base
     repo.create(@album)
     return erb(:confirm_add_album)
   end
+
+
+
 end
