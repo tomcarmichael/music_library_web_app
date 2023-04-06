@@ -48,14 +48,14 @@ class Application < Sinatra::Base
     return erb(:add_artist)
   end
 
-  def invalid_request_params?
+  def invalid_arist_params?
     return true if params[:name] == nil || params[:genre] == nil
     return true if params[:name] == "" || params[:genre] == ""
     return false
   end 
 
   post '/artists' do
-    if invalid_request_params?
+    if invalid_arist_params?
       status 400
       return ""
     end
@@ -71,9 +71,17 @@ class Application < Sinatra::Base
     return erb(:add_album)
   end
 
-
+  def invalid_album_params?
+    return true if params[:title] == nil || params[:release_year] == nil || params[:artist_id] == nil
+    return true if params[:title] == "" || params[:release_year] == "" || params[:artist_id] == ""
+    return false
+  end 
 
   post '/albums' do
+    if invalid_album_params?
+      status 400
+      return ""
+    end
     @album = Album.new
     @album.title = params[:title]
     @album.release_year = params[:release_year]

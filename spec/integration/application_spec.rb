@@ -183,5 +183,21 @@ describe Application do
       expect(response.body).to include('<a href="/albums/13">')
       expect(response.body).to include('Released: 2022')
     end
+
+
+    it 'responds with 400 status if parameter names are changed by client' do
+      response = post('/albums', username: 'user', password: '1234', id: 3)
+      expect(response.status).to eq (400)
+    end
+
+    it 'responds with 400 status if parameters are nil' do
+      response = post('/albums', title: nil, release_year: nil, artist_id: nil)
+      expect(response.status).to eq (400)
+    end
+
+    it 'responds with 400 status if parameters are empty strings' do
+      response = post('/albums', title: "", release_year: "", artist_id: "")
+      expect(response.status).to eq (400)
+    end
   end
 end
