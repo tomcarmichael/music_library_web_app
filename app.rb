@@ -32,15 +32,6 @@ class Application < Sinatra::Base
     return erb(:album )
   end
 
-  post '/albums' do
-    album = Album.new
-    album.title = params[:title]
-    album.release_year = params[:release_year]
-    album.artist_id = params[:artist_id]
-    repo = AlbumRepository.new
-    repo.create(album)
-  end
-
   get '/artists' do
     repo = ArtistRepository.new
     @artists = repo.all
@@ -53,31 +44,33 @@ class Application < Sinatra::Base
     return erb(:artist)
   end
 
-  post '/artists' do
-    artist = Artist.new
-    artist.name = params[:name]
-    artist.genre = params[:genre]
-    repo = ArtistRepository.new
-    repo.create(artist)
-  end
-
   get '/add_artist' do
     return erb(:add_artist)
   end
 
-  post '/add_artist' do
+  post '/artists' do
     @artist = Artist.new
     @artist.name = params[:name]
     @artist.genre = params[:genre]
     repo = ArtistRepository.new
     repo.create(@artist)
-    puts "Added artist!" # Testing that these messages are printed to terminal screen in rackup logs
     return erb(:confirm_add_artist)
   end
 
   get '/add_album' do
     return erb(:add_album)
   end
+
+  post '/albums' do
+    @album = Album.new
+    @album.title = params[:title]
+    @album.release_year = params[:release_year]
+    @album.artist_id = params[:artist_id]
+    repo = AlbumRepository.new
+    repo.create(@album)
+    return erb(:confirm_add_album)
+  end
+
 
   post '/add_album' do
     @album = Album.new
